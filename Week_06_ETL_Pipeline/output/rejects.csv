@@ -1,0 +1,5 @@
+﻿order_id,customer_id,product_id,order_date,qty,unit_price,discount_pct,status,parsed_date,reject_reason
+O0007,C046,P001,2026-08-04,-2,996.79,0,paid,2026-08-04,qty <= 0
+O0021,C014,P005,2026-08-04,2,1299.0,150,cancelled,2026-08-04,discount_pct outside 0-100
+O0034,C041,P004,not-a-date,2,390.89,0,paid,,invalid date
+O0091,C019,P015,01/08/2026,2,-100.0,5,completed,2026-08-01,unit_price <= 0

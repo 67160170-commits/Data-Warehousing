@@ -1,0 +1,9 @@
+﻿Metric,Before_Cleaning,After_Cleaning
+Total Rows,630,612
+Missing Customer Email,50,48
+Missing Province,12,12
+Exact Duplicates,18,0
+Invalid Quantity (1-20),3,3
+Amount Mismatches,50,50
+Outliers Capped (Non-Promo),0,19
+Late Loads (>24h),0,46

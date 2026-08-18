@@ -1,0 +1,20 @@
+2026-08-11 07:24:57,837 | INFO | ETL started
+2026-08-11 07:24:57,842 | INFO | Extracted customers=62 orders=183 products=15 stores=3
+2026-08-11 07:24:57,859 | INFO | Transformed valid fact rows=100 rejects=4
+2026-08-11 07:24:57,877 | INFO | Validation result={'source_valid_rows': 100, 'warehouse_rows': 100, 'duplicate_order_ids': 0, 'source_total_sales': 192074.66, 'warehouse_total_sales': 192074.66, 'status': 'PASS'}
+2026-08-11 07:25:11,089 | INFO | ETL started
+2026-08-11 07:25:11,098 | INFO | Extracted customers=62 orders=183 products=15 stores=3
+2026-08-11 07:25:11,116 | INFO | Transformed valid fact rows=100 rejects=4
+2026-08-11 07:25:11,122 | INFO | Validation result={'source_valid_rows': 100, 'warehouse_rows': 100, 'duplicate_order_ids': 0, 'source_total_sales': 192074.66, 'warehouse_total_sales': 192074.66, 'status': 'PASS'}
+2026-08-11 07:25:15,240 | INFO | ETL started
+2026-08-11 07:25:15,245 | INFO | Extracted customers=62 orders=183 products=15 stores=3
+2026-08-11 07:25:15,266 | INFO | Transformed valid fact rows=100 rejects=4
+2026-08-11 07:25:15,273 | INFO | Validation result={'source_valid_rows': 100, 'warehouse_rows': 100, 'duplicate_order_ids': 0, 'source_total_sales': 192074.66, 'warehouse_total_sales': 192074.66, 'status': 'PASS'}
+2026-08-12 16:10:41,097 | INFO | ETL started
+2026-08-12 16:10:41,109 | INFO | Extracted customers=62 orders=183 products=15 stores=3
+2026-08-12 16:10:41,139 | INFO | Transformed valid fact rows=100 rejects=4
+2026-08-12 16:10:41,148 | INFO | Validation result={'source_valid_rows': 100, 'warehouse_rows': 100, 'duplicate_order_ids': 0, 'source_total_sales': 192074.66, 'warehouse_total_sales': 192074.66, 'status': 'PASS'}
+2026-08-12 16:15:00,090 | INFO | ETL started
+2026-08-12 16:15:00,135 | INFO | Extracted customers=62 orders=183 products=15 stores=3
+2026-08-12 16:15:00,166 | INFO | Transformed valid fact rows=100 rejects=4
+2026-08-12 16:15:00,176 | INFO | Validation result={'source_valid_rows': 100, 'warehouse_rows': 100, 'duplicate_order_ids': 0, 'source_total_sales': 192074.66, 'warehouse_total_sales': 192074.66, 'status': 'PASS'}
