@@ -1,0 +1,19 @@
+﻿stage,table,action,count,reason
+Extract,orders,raw_concat,752,ม.ค. + ก.พ. concat
+Clean,orders,drop_null_unit_price,2,unit_price เป็น null
+Clean,orders,drop_invalid_quantity,2,quantity ≤ 0
+Clean,orders,drop_invalid_unit_price,0,unit_price ≤ 0
+Clean,orders,drop_invalid_discount,0,"discount ไม่อยู่ใน [0,1]"
+Clean,orders,dedup_order_id,2,order_id ซ้ำ – เก็บแถวล่าสุด
+Clean,customers,province_not_mapped,0,จังหวัดไม่พบใน province_map
+Clean,customers,dedup_customer_id,3,customer_id ซ้ำ – เก็บแถวล่าสุด
+Clean,customers,null_email,5,email เป็น null
+Clean,products,inactive_products,3,active_flag ≠ Y (ยังเก็บไว้)
+Clean,payments,dedup_payment_id,2,payment_id ซ้ำ – เก็บแถวล่าสุด
+Clean,payments,non_paid_events,181,status ≠ PAID (FAILED/REFUNDED) – ไม่นับเป็นยอดขาย
+Integrate,orders,unmatched_customer_id,22,customer_id ไม่พบใน customers_crm
+Integrate,orders,unmatched_product_id,59,product_id ไม่พบใน product_master (active)
+Integrate,orders,drop_unmatched,79,ไม่พบ customer หรือ product – ตัดออกจาก fact
+Integrate,orders,no_paid_payment,129,ไม่มี payment PAID สำหรับ order – ไม่นับยอดขาย
+Integrate,payments,orphan_payments,41,order_id ใน payments ไม่พบใน orders
+Validate,fact_sales,duplicate_order_id_after_merge,0,order_id ซ้ำใน fact หลัง merge – ตรวจ cardinality
