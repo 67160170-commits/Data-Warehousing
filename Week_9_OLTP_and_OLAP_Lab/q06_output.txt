@@ -1,0 +1,5 @@
+store_name	product_name	revenue
+Pattaya	Cocoa	180
+Pattaya	Tea	70
+Siam	Coffee	200
+Siam	Tea	150

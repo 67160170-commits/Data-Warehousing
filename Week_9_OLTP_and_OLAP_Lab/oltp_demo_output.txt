@@ -1,0 +1,9 @@
+======== รอบที่ 1 ========
+Before: [('O1004', 'PENDING')]
+Rowcount: 1
+After:  [('O1004', 'PAID')]
+
+======== รอบที่ 2 ========
+Before: [('O1004', 'PAID')]
+Rowcount: 0
+After:  [('O1004', 'PAID')]

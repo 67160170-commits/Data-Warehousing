@@ -1,0 +1,3 @@
+source	line_count	revenue
+fact_sales	8	1390
+sales_view	8	1390

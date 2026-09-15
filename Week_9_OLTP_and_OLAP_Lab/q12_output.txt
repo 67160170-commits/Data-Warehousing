@@ -1,0 +1,6 @@
+order_id	line_no	product_name	quantity	amount
+O1002	1	Tea	3	150
+O1003	1	Coffee	2	130
+O1005	1	Tea	1	50
+O1006	1	Coffee	2	120
+O1006	2	Cookie	3	240
