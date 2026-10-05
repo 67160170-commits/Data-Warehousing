@@ -1,3 +1,6 @@
+https://clinquant-cobbler-21c015.netlify.app 
+เปิดลิงก์นี้เพื่อดู Dashboard ได้ทันทีโดยไม่ต้องโหลดไฟล์
+
 # AI Demand Forecasting Dashboard (Business Idea Creation, Week 11)
 
 Dashboard เชิงเล่าเรื่องสำหรับโปรเจกต์ **AI Demand Forecasting & Supply Chain Management** ในโรงงานผลิตภัณฑ์ชีวภาพ
