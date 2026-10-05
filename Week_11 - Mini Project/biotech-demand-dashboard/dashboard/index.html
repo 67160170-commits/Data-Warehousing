@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>จากยอดสั่งซื้อ สู่ใบสั่งวัตถุดิบ | AI Demand Forecasting</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F6F4;--ink:#0E2E2B;--mut:#52706B;--act:#0E2E2B;--fc:#D99A00;--bad:#C2432B;--ok:#2E8B6B;--card:#fff;--line:#D3DFDB}
+@media(prefers-color-scheme:dark){:root{--bg:#0B1F1D;--ink:#E6F1EE;--mut:#8DAAA4;--act:#E6F1EE;--fc:#F0B429;--bad:#F07A62;--ok:#5CC7A2;--card:#12302D;--line:#24473F}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.7 "IBM Plex Sans Thai",system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:48px 20px 80px}
+h1{font-size:clamp(30px,6vw,52px);line-height:1.2;margin:0 0 16px;font-weight:700}
+h2{font-size:clamp(22px,4vw,30px);line-height:1.3;margin:0 0 8px;font-weight:700}
+p{margin:0 0 14px;max-width:62ch}.mut{color:var(--mut);font-size:15px}
+section{padding:56px 0 8px;border-top:1px solid var(--line);margin-top:48px}
+.hero{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-end;margin-top:24px}
+.big{font-size:clamp(56px,12vw,104px);font-weight:700;line-height:1;color:var(--fc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:18px 0;overflow-x:auto}
+svg{width:100%;height:auto;display:block}svg text{fill:var(--mut);font:12px "IBM Plex Sans Thai",sans-serif}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+button{font:inherit;font-size:14px;padding:6px 14px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}button:focus-visible{outline:3px solid var(--fc)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:560px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--mut)}.tag{padding:2px 10px;border-radius:99px;font-size:13px;font-weight:600;border:1.5px solid currentColor}
+.bad{color:var(--bad)}.ok{color:var(--ok)}.ex{color:var(--fc)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--mut)}.legend i{display:inline-block;width:18px;height:4px;vertical-align:middle;margin-right:6px;border-radius:2px}
+.act{background:var(--card);border-left:6px solid var(--fc);padding:16px 20px;border-radius:6px}
+</style></head><body><main>
+<header>
+<p class="mut">Business Idea Creation · Week 11 Mini Project · ข้อมูลในหน้านี้เป็นข้อมูลจำลอง</p>
+<h1>ผู้วางแผนเดาจากเดือนที่ผ่านมา AI อ่านแนวโน้มทั้งปี</h1>
+<p>โรงงานผลิตภัณฑ์ชีวภาพต้องสั่งวัตถุดิบล่วงหน้า 2–4 สัปดาห์ ถ้าเดายอดสั่งซื้อพลาด จะเกิดสองอย่าง คือวัตถุดิบขาดจนผลิตไม่ทัน หรือสั่งเกินจนเงินจมในสต็อก หน้านี้เล่าว่าเราไปถึงใบสั่งซื้อวัตถุดิบที่แนะนำได้อย่างไร</p>
+<div class="hero"><div class="big" id="gap">–</div><p style="max-width:34ch">คือสัดส่วนความคลาดเคลื่อนของการพยากรณ์ที่ AI ลดลง เมื่อเทียบกับวิธีเฉลี่ย 3 เดือนล่าสุดที่ผู้วางแผนใช้อยู่ (ทดสอบย้อนหลัง 6 เดือน)</p></div>
+</header>
+
+<section><h2>1. ความต้องการโตขึ้นและขึ้นลงตามฤดูกาล</h2>
+<p>ยอดสั่งซื้อรวมของ 3 ผลิตภัณฑ์เพิ่มขึ้นต่อเนื่อง และมีช่วงพีคปลายปี การเฉลี่ยย้อนหลังจึงตามไม่ทัน เพราะค่าเฉลี่ยมักต่ำกว่ายอดจริงในช่วงที่ตลาดกำลังโต</p>
+<div class="tabs" id="tabs" role="group" aria-label="เลือกผลิตภัณฑ์"></div>
+<div class="card"><svg id="c1" viewBox="0 0 800 300" role="img" aria-label="กราฟยอดสั่งซื้อจริงและค่าพยากรณ์"></svg>
+<div class="legend"><span><i style="background:var(--act)"></i>ยอดสั่งซื้อจริง</span><span><i style="background:var(--fc)"></i>AI พยากรณ์ 6 เดือนข้างหน้า</span><span><i style="background:var(--fc);opacity:.25;height:10px"></i>ช่วงความไม่แน่นอน</span></div></div>
+<p id="t1"></p></section>
+
+<section><h2>2. ทำไมถึงเชื่อ AI: ทดสอบย้อนหลังกับยอดจริง</h2>
+<p>เราให้ทั้งสองวิธีพยากรณ์ล่วงหน้า 1 เดือน ทีละเดือน ย้อนหลัง 6 เดือน แล้ววัดความคลาดเคลื่อน (MAPE) ยิ่งต่ำยิ่งดี</p>
+<div class="card"><svg id="c2" viewBox="0 0 800 220" role="img" aria-label="เปรียบเทียบ MAPE ของ AI กับวิธีเฉลี่ย"></svg></div>
+<p class="mut">โมเดลในตัวอย่างนี้เป็นเส้นแนวโน้มร่วมกับดัชนีฤดูกาลรายเดือน ซึ่งเรียบง่ายโดยตั้งใจ เพื่อให้ทีมอธิบายให้ผู้จัดการเข้าใจได้ และเปลี่ยนเป็นโมเดลอื่นได้ภายหลัง</p></section>
+
+<section><h2>3. แปลงยอดพยากรณ์เป็นวัตถุดิบที่ต้องใช้</h2>
+<p>นำยอดพยากรณ์ไปคูณสูตรการผลิต (BOM) แล้วเทียบกับสต็อกที่มีอยู่ ระบบเผื่อ safety stock 15% และครอบคลุมความต้องการ 2 เดือนข้างหน้า</p>
+<div class="card"><table id="tbl"></table></div></section>
+
+<section><h2>4. สิ่งที่ผู้จัดการ Supply Chain ควรทำสัปดาห์นี้</h2><div id="acts"></div>
+<p class="mut" style="margin-top:20px">ผู้จัดการยังเป็นผู้ตัดสินใจขั้นสุดท้าย ระบบแค่เตรียมตัวเลขและเหตุผลให้พร้อม</p></section>
+</main>
+<script>
+const D={"act": ["2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09"], "fc": ["2026-10", "2026-11", "2026-12", "2027-01", "2027-02", "2027-03"], "demand": {"Probiotic Powder": [6145, 6670, 7439, 5860, 5881, 6528, 6535, 7211, 7596, 7813, 7103, 7276, 7428, 8643, 9074, 6938, 7723, 8443, 8531, 8971, 8782, 8675, 9113, 8558], "Enzyme Concentrate": [3173, 3403, 3521, 3072, 3042, 3490, 3515, 3763, 3826, 3919, 3767, 3663, 4163, 4423, 4607, 3742, 3537, 3820, 4017, 4116, 4621, 4435, 4596, 4318], "Bio-Fertilizer": [4890, 5113, 4876, 4116, 4419, 4567, 5045, 4946, 4888, 5230, 5218, 4857, 4934, 5381, 6120, 4908, 4483, 4952, 5056, 5275, 5928, 5496, 5640, 5500]}, "forecast": {"Probiotic Powder": [8974, 10043, 10817, 8361, 8806, 9661], "Enzyme Concentrate": [4655, 4952, 5125, 4296, 4144, 4602], "Bio-Fertilizer": [5609, 5979, 6234, 5118, 5062, 5400]}, "bt": {"Probiotic Powder": {"actual": [8531, 8971, 8782, 8675, 9113, 8558], "ai": [7918, 8735, 9247, 9485, 8568, 8767], "manual": [7701, 8232, 8648, 8761, 8809, 8857], "mape_ai": 5.5, "mape_manual": 4.6}, "Enzyme Concentrate": {"actual": [4017, 4116, 4621, 4435, 4596, 4318], "ai": [4135, 4384, 4434, 4594, 4417, 4306], "manual": [3700, 3791, 3984, 4251, 4391, 4551], "mape_ai": 3.5, "mape_manual": 7.3}, "Bio-Fertilizer": {"actual": [5056, 5275, 5928, 5496, 5640, 5500], "ai": [5372, 5239, 5191, 5665, 5664, 5294], "manual": [4781, 4830, 5094, 5420, 5566, 5688], "mape_ai": 4.4, "mape_manual": 5.7}}, "mats": [{"material": "Culture Medium", "unit": "kg", "lead_days": 14, "need": [4184, 4601, 4894, 3879, 3977, 4359], "stock": 2929, "order": 7174, "cover": 0.7, "status": "เสี่ยงขาด"}, {"material": "Organic Carrier", "unit": "kg", "lead_days": 30, "need": [8974, 9805, 10396, 8275, 8453, 9150], "stock": 14359, "order": 7237, "cover": 1.6, "status": "พอดี"}, {"material": "Enzyme Substrate", "unit": "kg", "lead_days": 21, "need": [2095, 2228, 2306, 1933, 1865, 2071], "stock": 8798, "order": 0, "cover": 4.2, "status": "สต็อกเกิน"}], "mape_ai": 4.5, "mape_manual": 5.9};const $=s=>document.querySelector(s);const fmt=n=>Math.round(n).toLocaleString("th-TH");
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n);
+const TH=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];const lab=m=>TH[+m.slice(5)-1];
+const names=Object.keys(D.demand);let cur="ทั้งหมด";
+$("#gap").textContent=Math.round((1-D.mape_ai/D.mape_manual)*100)+"%";
+const tabs=$("#tabs");["ทั้งหมด",...names].forEach(n=>{const b=document.createElement("button");b.textContent=n;b.onclick=()=>{cur=n;draw()};tabs.append(b)});
+function series(n){const ks=n==="ทั้งหมด"?names:[n];const sum=o=>o[ks[0]].map((_,i)=>ks.reduce((a,k)=>a+o[k][i],0));return{a:sum(D.demand),f:sum(D.forecast)}}
+function draw(){[...tabs.children].forEach(b=>b.setAttribute("aria-pressed",b.textContent===cur));
+ const {a,f}=series(cur),all=[...a,...f],W=800,H=300,L=56,B=30,T=14,mx=Math.max(...all)*1.12,mn=Math.min(...all)*.85,N=a.length+f.length;
+ const X=i=>L+i*(W-L-12)/(N-1),Y=v=>T+(H-T-B)*(1-(v-mn)/(mx-mn));
+ let s="";for(let k=0;k<=4;k++){const v=mn+(mx-mn)*k/4;s+=`<line x1="${L}" x2="${W}" y1="${Y(v)}" y2="${Y(v)}" stroke="${css("--line")}"/><text x="${L-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v)}</text>`}
+ D.act.concat(D.fc).forEach((m,i)=>{if(i%3==0||i==N-1)s+=`<text x="${X(i)}" y="${H-8}" text-anchor="middle">${lab(m)}</text>`});
+ const pa=a.map((v,i)=>`${i?"L":"M"}${X(i)},${Y(v)}`).join(""),pf=[a[a.length-1],...f].map((v,i)=>`${i?"L":"M"}${X(a.length-1+i)},${Y(v)}`).join("");
+ const band=.07; const up=f.map((v,i)=>`${X(a.length+i)},${Y(v*(1+band*(1+i*.15)))}`),lo=f.map((v,i)=>`${X(a.length+i)},${Y(v*(1-band*(1+i*.15)))}`).reverse();
+ s+=`<polygon points="${up.concat(lo).join(" ")}" fill="${css("--fc")}" opacity=".25"/><path d="${pa}" fill="none" stroke="${css("--act")}" stroke-width="2.5"/><path d="${pf}" fill="none" stroke="${css("--fc")}" stroke-width="3" stroke-dasharray="7 5"/>`;
+ s+=`<circle cx="${X(N-1)}" cy="${Y(f[5])}" r="5" fill="${css("--fc")}"/><text x="${X(N-1)-8}" y="${Y(f[5])-12}" text-anchor="end" style="fill:${css("--ink")};font-weight:600">${fmt(f[5])}</text>`;
+ $("#c1").innerHTML=s;const g=(f[5]/a[a.length-1]-1)*100;
+ $("#t1").textContent=`${cur}: ยอดล่าสุด ${fmt(a[a.length-1])} หน่วย/เดือน คาดว่าจะเป็น ${fmt(f[5])} หน่วยใน ${lab(D.fc[5])} (${g>=0?"+":""}${g.toFixed(0)}% จากเดือนล่าสุด)`}
+draw();
+(function(){let s="",row=0;const mean=k=>names.reduce((a,n)=>a+D.bt[n][k],0)/3;
+ [["AI พยากรณ์",D.mape_ai,"--fc"],["เฉลี่ย 3 เดือนล่าสุด",D.mape_manual,"--mut"]].forEach(([t,v,c],i)=>{const y=30+i*70,w=v/Math.max(D.mape_ai,D.mape_manual)*480;
+ s+=`<text x="0" y="${y+22}" style="fill:${css("--ink")};font-size:14px">${t}</text><rect x="170" y="${y}" width="${w}" height="36" rx="4" fill="${css(c)}"/><text x="${180+w}" y="${y+24}" style="fill:${css("--ink")};font-size:16px;font-weight:700">${v.toFixed(1)}%</text>`});
+ $("#c2").innerHTML=s})();
+$("#tbl").innerHTML=`<tr><th>วัตถุดิบ</th><th>ใช้เดือนหน้า (kg)</th><th>สต็อกปัจจุบัน (kg)</th><th>พอใช้ (เดือน)</th><th>Lead time (วัน)</th><th>สถานะ</th></tr>`+D.mats.map(m=>`<tr><td>${m.material}</td><td>${fmt(m.need[0])}</td><td>${fmt(m.stock)}</td><td>${m.cover}</td><td>${m.lead_days}</td><td><span class="tag ${m.status=="เสี่ยงขาด"?"bad":m.status=="พอดี"?"ok":"ex"}">${m.status}</span></td></tr>`).join("");
+$("#acts").innerHTML=D.mats.map(m=>{let t;
+ if(m.status=="เสี่ยงขาด")t=`<b>สั่ง ${m.material} ${fmt(m.order)} kg ทันที</b> สต็อกพอใช้แค่ ${m.cover} เดือน แต่ใช้เวลาส่งของ ${m.lead_days} วัน จึงควรสั่งก่อนเริ่มเดือนหน้า`;
+ else if(m.status=="สต็อกเกิน")t=`<b>ชะลอการสั่ง ${m.material}</b> สต็อกพอใช้ ${m.cover} เดือน ซึ่งเกินที่ต้องการ ควรเลื่อนสั่งเพื่อลดเงินจมในสต็อก`;
+ else t=`<b>สั่ง ${m.material} ${fmt(m.order)} kg ตามรอบปกติ</b> สต็อกพอใช้ ${m.cover} เดือน เติมให้ครอบคลุมช่วงพีคปลายปี`;
+ return `<div class="act" style="margin:12px 0">${t}</div>`}).join("");
+</script></body></html>

@@ -1,0 +1,4 @@
+material,unit,lead_time_days,need_next_month,stock_on_hand,months_of_cover,recommended_order,status
+Culture Medium,kg,14,4184,2929,0.7,7174,เสี่ยงขาด
+Organic Carrier,kg,30,8974,14359,1.6,7237,พอดี
+Enzyme Substrate,kg,21,2095,8798,4.2,0,สต็อกเกิน
