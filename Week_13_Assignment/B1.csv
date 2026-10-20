@@ -1,0 +1,5 @@
+﻿table_name,rows
+orders,240
+customers,40
+products,8
+fact_sales,225

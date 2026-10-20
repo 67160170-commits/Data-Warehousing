@@ -1,0 +1,11 @@
+﻿order_id,order_date,customer_id,product_id,quantity,unit_price,discount_pct,channel,status
+O0092,2026-09-29,C020,P04,4,89,0,"ออนไลน์",Completed
+O0106,2026-09-27,C026,P04,2,89,0,"ออนไลน์",Completed
+O0008,2026-09-27,C006,P05,4,70,0,"ออนไลน์",Completed
+O0141,2026-09-26,C040,P01,3,65,10,"ออนไลน์",Completed
+O0239,2026-09-21,C007,P03,4,75,0,"ออนไลน์",Completed
+O0193,2026-09-20,C026,P06,1,99,0,"ออนไลน์",Completed
+O0174,2026-09-20,C039,P03,4,75,5,"ออนไลน์",Completed
+O0064,2026-09-20,C026,P07,1,119,5,"ออนไลน์",Completed
+O0029,2026-09-19,C026,P01,3,65,5,"ออนไลน์",Completed
+O0163,2026-09-17,C039,P08,4,20,0,"ออนไลน์",Completed
